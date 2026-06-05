@@ -8,7 +8,7 @@ for key in list(os.environ.keys()):
     if "HF" in key or "TOKEN" in key:
         del os.environ[key]
 
-my_secret_token = "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"
+my_secret_token = "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"
 os.environ["HF_TOKEN"] = my_secret_token
 os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "0"
 
@@ -88,18 +88,20 @@ print("Loading dataset...")
 dataset = load_dataset("json", data_files=dataset_path, split="train")
 
 # 5. Adjusted SFTConfig (Bare-metal compliant for any TRL version)
+# 5. Future SFTConfig (Premium High-Clarity Optimization for 15+ Credits)
 training_args = SFTConfig(
-    output_dir="./medgemma-fresh-output",
-    per_device_train_batch_size=4,        
-    gradient_accumulation_steps=4,        
+    output_dir="./medgemma-premium-output",
+    per_device_train_batch_size=4,        # Lower batch size for fine-grained weight adjustments
+    gradient_accumulation_steps=4,        # High accumulation to stabilize the gradient updates
     optim="paged_adamw_8bit",             
     logging_steps=10,
     learning_rate=2e-4,                   
     bf16=True,                            
     max_grad_norm=0.3,
-    num_train_epochs=2,                    
+    num_train_epochs=3,                   # Upgraded to 3 Epochs for deep clinical clarity
     warmup_ratio=0.03,
-    save_strategy="no",                   
+    save_strategy="steps",                # Save intermediate checkpoints automatically
+    save_steps=100,                       # Backs up the weights every 100 steps
     gradient_checkpointing=True,          
     report_to="none"
 )
